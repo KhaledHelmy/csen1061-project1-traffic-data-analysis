@@ -3,4 +3,11 @@ title: Traffic Data Analysis
 output: html_document
 ---
 
-this is where things start :)
+## Reading Data
+
+```{r}
+data = read.csv("all-semi-unique.csv")
+names(data)
+str(data)
+summary(data)
+```
