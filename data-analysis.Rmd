@@ -11,16 +11,16 @@ library(dplyr)
 
 ```{r}
 data = read.csv("all-semi-unique.csv")
+nrow(data)
+ncol(data)
 names(data)
 str(data)
 summary(data)
 ```
 
-Having a look on the number of rows, number of columns and the first few rows of the data:
+Having a look on the first few rows of the data:
 
 ```{r}
-nrow(data)
-ncol(data)
 head(data)
 ```
 
@@ -32,5 +32,12 @@ Removing advertisements columns:
 data <- data %>% select(-starts_with("ad."))
 ncol(data)
 names(data)
-head(data)
+```
+
+Removing road images, colors and rode report images
+
+```{r}
+data <- subset(data, select = -c(rd.img, rd.cl, rd.rp.rpImg, rd.rp.img))
+ncol(data)
+names(data)
 ```
