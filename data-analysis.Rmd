@@ -11,8 +11,7 @@ library(dplyr)
 
 ```{r}
 data = read.csv("all-semi-unique.csv")
-nrow(data)
-ncol(data)
+dim(data)
 names(data)
 str(data)
 summary(data)
@@ -65,7 +64,7 @@ names(data)
 Checking proportion of N/A values.
 
 ```{r}
-length(data[is.na(data)])/(ncol(data)*nrow(data))
+sum(is.na(data)) / nrow(data) / ncol(data)
 ```
 
 Checking number of duplicate rows.
@@ -73,3 +72,10 @@ Checking number of duplicate rows.
 ```{r}
 nrow(data) - nrow(unique(data))
 ```
+
+***
+TODO:  
+Guess Rest of Column Meanings  
+Verify Date Format  
+Check for Unnecessary N/A Values  
+Feature Engineering  
