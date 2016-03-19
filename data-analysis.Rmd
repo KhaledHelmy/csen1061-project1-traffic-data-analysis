@@ -3,6 +3,10 @@ title: Traffic Data Analysis
 output: html_document
 ---
 
+```{r}
+library(dplyr)
+```
+
 ## Reading Data
 
 ```{r}
@@ -17,5 +21,16 @@ Having a look on the number of rows, number of columns and the first few rows of
 ```{r}
 nrow(data)
 ncol(data)
+head(data)
+```
+
+## Cleaning Data
+
+Removing advertisements columns:
+
+```{r}
+data <- data %>% select(-starts_with("ad."))
+ncol(data)
+names(data)
 head(data)
 ```
