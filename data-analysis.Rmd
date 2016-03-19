@@ -11,3 +11,11 @@ names(data)
 str(data)
 summary(data)
 ```
+
+Having a look on the number of rows, number of columns and the first few rows of the data:
+
+```{r}
+nrow(data)
+ncol(data)
+head(data)
+```
