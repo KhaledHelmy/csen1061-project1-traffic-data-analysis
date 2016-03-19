@@ -18,7 +18,7 @@ str(data)
 summary(data)
 ```
 
-Having a look on the first few rows of the data:
+Having a look on the first few rows of the data.
 
 ```{r}
 head(data)
@@ -26,7 +26,9 @@ head(data)
 
 ## Cleaning Data
 
-Removing advertisements columns:
+### Processing Columns
+
+Removing advertisements columns.
 
 ```{r}
 data <- data %>% select(-starts_with("ad."))
@@ -34,10 +36,40 @@ ncol(data)
 names(data)
 ```
 
-Removing road images, colors and rode report images
+Removing road images, colors and rode report images.
 
 ```{r}
 data <- subset(data, select = -c(rd.img, rd.cl, rd.rp.rpImg, rd.rp.img))
 ncol(data)
 names(data)
+```
+
+Checking columns with constant features and printing their names.
+
+```{r}
+col_ct = sapply(data, function(x) length(unique(x)))
+length(col_ct[col_ct == 1])
+names(col_ct[col_ct == 1])
+```
+
+Removing constant-feature columns.
+
+```{r}
+data = data[, !names(data) %in% names(col_ct[col_ct == 1])]
+ncol(data)
+names(data)
+```
+
+### Processing Rows
+
+Checking proportion of N/A values.
+
+```{r}
+length(data[is.na(data)])/(ncol(data)*nrow(data))
+```
+
+Checking number of duplicate rows.
+
+```{r}
+nrow(data) - nrow(unique(data))
 ```
