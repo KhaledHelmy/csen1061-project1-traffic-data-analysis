@@ -73,9 +73,19 @@ Checking number of duplicate rows.
 nrow(data) - nrow(unique(data))
 ```
 
+Removing rows with same comment id.
+
+```{r}
+data <- data %>% distinct(rd.rp.cmid)
+nrow(data)
+```
+
+```{r}
+write.csv(data, "cleaned-data.csv")
+```
+
 ***
 TODO:  
-Guess Rest of Column Meanings  
-Verify Date Format  
-Check for Unnecessary N/A Values  
+Verify Date Format
+Check for Unnecessary N/A Values
 Feature Engineering  
