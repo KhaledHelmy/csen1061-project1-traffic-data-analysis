@@ -263,6 +263,8 @@ They might indicate the a certain state for status requests and comment requests
 
 * `road_to`: The *to* direction of a road report. `area`, `road_from` and `road_to` combination is the result of `rd.nm` decomposition. It is better using this decomposition to have a better look on road reports.
 
+* `city`: The road city.
+
 *Useful Dimensions*:
 
 * `rd.stid`
@@ -275,11 +277,12 @@ They might indicate the a certain state for status requests and comment requests
 * `area`
 * `road_from`
 * `road_to`
+* `city`
 
 Selecting only these columns for the data
 
 ```{r}
-data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to))
+data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to, city))
 ncol(data)
 names(data)
 head(data)
@@ -291,13 +294,45 @@ head(data)
 * The impact of automated GPS reportings.
 * User statistics.
 * Area and road statuses throughout the day.
-* Comments statistics.
 * Area and road statistics.
 * Area and road reporting times.
 * Area and road traffic jams.
 * Area and road reporting densities.
 
 ### Descriptive Statistics
+
+Finding the number and percentage of users who report without signing in.
+
+```{r}
+length(which(data$rd.rp.nm == "fa3el kheir"))
+length(which(data$rd.rp.nm == "fa3el kheir")) / length(which(data$rd.rp.nm != "bey2ollakgps"))
+```
+
+It shows that 16% of the users report without signing in.
+
+Finding the number and percentage of users who do not state their full names.
+
+```{r}
+sum(is.na(data$rd.rp.fullnm)) - length(which(data$rd.rp.nm == "fa3el kheir"))
+(sum(is.na(data$rd.rp.fullnm)) - length(which(data$rd.rp.nm == "fa3el kheir"))) / length(which(data$rd.rp.fullnm != "GPS Reporter" & data$rd.rp.nm != "fa3el kheir"))
+```
+
+It shows that 5% of signed-in users do not specify their full names.
+
+Finding the impact of automated GPS reportings.
+
+```{r}
+length(which(data$rd.rp.nm == "bey2ollakgps")) / length(data$rd.rp.nm)
+```
+
+It shows that around 40% of the reportings are automated reportings.
+
+Finding user statistics.
+
+```{r}
+users <- data %>% group_by(city) %>% summarize(unique_users = length(unique(rd.rp.nm)))
+head(users)
+```
 
 ```{r}
 length(unique(data$rd.stid))
