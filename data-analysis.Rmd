@@ -6,6 +6,7 @@ output: html_document
 ```{r}
 library(dplyr)
 library(lubridate)
+library(stringr)
 ```
 
 ## Reading Data
@@ -82,6 +83,12 @@ nrow(data)
 ```
 
 ## Feature Engineering
+
+Splitting road names into areas and roads.
+
+```{r}
+data <- data %>% mutate(area = str_split_fixed(rd.nm, ";", 2)[, 1], road = str_split_fixed(rd.nm, ";", 2)[, 2])
+```
 
 Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`.
 
