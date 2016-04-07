@@ -7,6 +7,8 @@ output: html_document
 library(dplyr)
 library(lubridate)
 library(stringr)
+library(corrplot)
+library(caret)
 ```
 
 ## Reading Data
@@ -86,6 +88,18 @@ Removing constant-feature columns.
 data = data[, !names(data) %in% names(col_ct[col_ct == 1])]
 ncol(data)
 names(data)
+```
+
+Finding featues with high correlation values.
+
+```{r}
+cor_feats = c("rd.ri", "rd.stid", "rd.new", "rd.strq", "rd.cmrq", "rd.rp.stid", "rd.rp.cmid")
+cor_mat = cor(data[, cor_feats], use = "complete")
+corrplot(method = "shade", cor_mat)
+
+cor_threshold = 0.6
+high_cor <- findCorrelation(cor_mat, cutoff = cor_threshold)
+cor_feats[high_cor]
 ```
 
 ### Feature Creation
