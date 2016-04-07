@@ -80,12 +80,14 @@ data <- data %>% distinct(rd.rp.cmid)
 nrow(data)
 ```
 
-```{r}
-write.csv(data, "cleaned-data.csv")
-```
+## Feature Engineering
 
-***
-TODO:  
-Verify Date Format
-Check for Unnecessary N/A Values
-Feature Engineering  
+Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`
+
+```{r}
+data$formatted_crawl_date <- as.POSIXct(data$crawl_date, format = "%a %b %d %T UTC %Y", tz = "UTC")
+data$formatted_crawl_date <- as.POSIXct(c(data$formatted_crawl_date), tz = "Egypt")
+head(data$crawl_date)
+head(data$formatted_crawl_date)
+str(data$formatted_crawl_date)
+```
