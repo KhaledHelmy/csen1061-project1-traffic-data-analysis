@@ -270,6 +270,16 @@ names(data)
 head(data)
 ```
 
+**Possible Metrics**:
+
+1. Users preferences for stating user names and full names.
+2. The impact of automated GPS reportings.
+3. Area and road statuses throughout the day.
+4. Comments statistics.
+5. Area and road reporting times.
+6. Area and road traffic jams.
+7. Area and road reporting densities.
+
 ### Descriptive Statistics
 
 ```{r}
