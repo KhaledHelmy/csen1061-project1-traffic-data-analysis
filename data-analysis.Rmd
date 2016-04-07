@@ -121,6 +121,13 @@ data$report_date <- data$formatted_crawl_date - hours(data$rd.rp.hr) - minutes(d
 head(data$report_date)
 ```
 
+Adding `road_date` to the data frame.
+
+```{r}
+data$road_date <- data$formatted_crawl_date - hours(data$rd.hr) - minutes(data$rd.mn)
+head(data$road_date)
+```
+
 Finding road delimiters.
 
 ```{r}
@@ -231,6 +238,8 @@ They might indicate the a certain state for status requests and comment requests
 
 * `report_date`: The date and time for a report. It is better than the amount of time passed since the report publish.
 
+* `road_date`: The date and time for a road last update. It is better than the amount of time passed since the road update.
+
 * `area`: The area name of a report.
 
 * `road`: The road name of a report.
@@ -242,13 +251,12 @@ They might indicate the a certain state for status requests and comment requests
 *Useful Dimensions*:
 
 * `rd.stid`
-* `rd.hr`
-* `rd.mn`
 * `rd.rp.nm`
 * `rd.rp.fullnm`
 * `rd.rp.stid`
 * `rd.rp.cm`
 * `report_date`
+* `road_date`
 * `area`
 * `road_from`
 * `road_to`
@@ -256,9 +264,10 @@ They might indicate the a certain state for status requests and comment requests
 Selecting only these columns for the data
 
 ```{r}
-data <- data %>% subset(select = c(rd.stid, rd.hr, rd.mn, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, area, road_from, road_to))
+data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to))
 ncol(data)
 names(data)
+head(data)
 ```
 
 ### Descriptive Statistics
