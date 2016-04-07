@@ -166,3 +166,13 @@ data <- data %>% mutate(
   road_to = ifelse(is.na(road), NA, str_split_fixed(road, " To ", 2)[, 2])
 )
 ```
+
+## Exploratory Data Analysis
+
+From the correlation plot, it is evident that there is a strong (negative) correlation between `rd.strq` and `rd.cmrq`. Further inspecting the relation between the 2 columns:
+
+```{r}
+length(unique(data$rd.strq))
+cmrq <- data %>% group_by(rd.strq) %>% summarize(unique_cmrq = n_distinct(rd.cmrq), mean_cmrq = mean(rd.cmrq))
+cmrq[1:2, ]
+```
