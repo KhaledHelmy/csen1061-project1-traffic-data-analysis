@@ -84,12 +84,6 @@ nrow(data)
 
 ## Feature Engineering
 
-Splitting road names into areas and roads.
-
-```{r}
-data <- data %>% mutate(area = str_split_fixed(rd.nm, ";", 2)[, 1], road = str_split_fixed(rd.nm, ";", 2)[, 2])
-```
-
 Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`.
 
 ```{r}
@@ -105,4 +99,16 @@ Adding `report_date` to the data frame.
 ```{r}
 data$report_date <- data$formatted_crawl_date - hours(data$rd.rp.hr) - minutes(data$rd.rp.mn)
 head(data$report_date)
+```
+
+Splitting road names into areas and roads.
+
+```{r}
+data <- data %>% mutate(area = str_split_fixed(rd.nm, ";", 2)[, 1], road = str_split_fixed(rd.nm, ";", 2)[, 2])
+```
+
+Getting road directions.
+
+```{r}
+data <- data %>% mutate(road_from = str_split_fixed(road, " To ", 2)[, 1], road_to = str_split_fixed(road, " To ", 2)[, 2])
 ```
