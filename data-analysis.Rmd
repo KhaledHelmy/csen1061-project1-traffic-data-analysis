@@ -277,6 +277,7 @@ head(data)
 * User statistics.
 * Area and road statuses throughout the day.
 * Comments statistics.
+* Area and road statistics.
 * Area and road reporting times.
 * Area and road traffic jams.
 * Area and road reporting densities.
