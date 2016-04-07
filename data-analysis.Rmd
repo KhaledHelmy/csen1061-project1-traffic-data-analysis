@@ -5,6 +5,7 @@ output: html_document
 
 ```{r}
 library(dplyr)
+library(lubridate)
 ```
 
 ## Reading Data
@@ -82,7 +83,7 @@ nrow(data)
 
 ## Feature Engineering
 
-Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`
+Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`.
 
 ```{r}
 data$formatted_crawl_date <- as.POSIXct(data$crawl_date, format = "%a %b %d %T UTC %Y", tz = "UTC")
@@ -90,4 +91,11 @@ data$formatted_crawl_date <- as.POSIXct(c(data$formatted_crawl_date), tz = "Egyp
 head(data$crawl_date)
 head(data$formatted_crawl_date)
 str(data$formatted_crawl_date)
+```
+
+Adding `report_date` to the data frame.
+
+```{r}
+data$report_date <- data$formatted_crawl_date - hours(data$rd.rp.hr) - minutes(data$rd.rp.mn)
+head(data$report_date)
 ```
