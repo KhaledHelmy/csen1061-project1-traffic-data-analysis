@@ -189,6 +189,19 @@ names(data)
 head(data)
 ```
 
+Adding road speed.
+
+```{r}
+data <- data %>% mutate(
+  speed = ifelse(rd.rp.nm == "bey2ollakgps", sapply(str_extract_all(rd.rp.cm, "[0-9]+ km/h|[0-9]+ كم/س"), function(x) paste(x, collapse=',')), NA)
+)
+
+data$speed <- gsub(" km/h| كم/س", "", data$speed)
+
+names(data)
+head(data[which(data$rd.rp.nm == "bey2ollakgps"),])
+```
+
 ## Exploratory Data Analysis
 
 ### Identify Metrics and Dimensions
@@ -293,8 +306,8 @@ head(data)
 * Users preferences for stating user names and full names.
 * The impact of automated GPS reportings.
 * User statistics.
-* Area and road statuses throughout the day.
 * Area and road statistics.
+* Area and road statuses throughout the day.
 * Area and road reporting times.
 * Area and road traffic jams.
 * Area and road reporting densities.
