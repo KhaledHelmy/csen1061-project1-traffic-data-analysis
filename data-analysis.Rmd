@@ -176,3 +176,5 @@ length(unique(data$rd.strq))
 cmrq <- data %>% group_by(rd.strq) %>% summarize(unique_cmrq = n_distinct(rd.cmrq), mean_cmrq = mean(rd.cmrq))
 cmrq[1:2, ]
 ```
+
+## Inferential Data Analysis
