@@ -45,22 +45,6 @@ ncol(data)
 names(data)
 ```
 
-Checking columns with constant features and printing their names.
-
-```{r}
-col_ct = sapply(data, function(x) length(unique(x)))
-length(col_ct[col_ct == 1])
-names(col_ct[col_ct == 1])
-```
-
-Removing constant-feature columns.
-
-```{r}
-data = data[, !names(data) %in% names(col_ct[col_ct == 1])]
-ncol(data)
-names(data)
-```
-
 ### Processing Rows
 
 Checking number of duplicate rows.
@@ -85,6 +69,26 @@ sum(is.na(data)) / nrow(data) / ncol(data)
 
 barplot(sapply(data, function(col) sum(is.na(col))))
 ```
+
+### Feature Removal
+
+Checking columns with constant features and printing their names.
+
+```{r}
+col_ct = sapply(data, function(x) length(unique(x)))
+length(col_ct[col_ct == 1])
+names(col_ct[col_ct == 1])
+```
+
+Removing constant-feature columns.
+
+```{r}
+data = data[, !names(data) %in% names(col_ct[col_ct == 1])]
+ncol(data)
+names(data)
+```
+
+### Feature Creation
 
 Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`.
 
