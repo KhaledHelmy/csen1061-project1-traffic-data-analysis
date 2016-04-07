@@ -171,14 +171,101 @@ data <- data %>% mutate(
 
 ### Identify Metrics and Dimensions
 
-### Descriptive Statistics
+**Dimensions**:
 
-From the correlation plot, it is evident that there is a strong (negative) correlation between `rd.strq` and `rd.cmrq`. Further inspecting the relation between the 2 columns:
+* `crawl_date`: The crawl date and time for a report. It was used to get `formatted_crawl_date`.
+
+* `rd.nm`: The road name. It was used to get the `area` name, `road_from` and `road_to` directions.
+
+* `rd.ri`:
+```{r}
+length(unique(data$rd.nm))
+ri <- data %>% group_by(rd.nm) %>% summarize(unique_ri = n_distinct(rd.ri))
+length(which(ri$unique_ri > 1))
+ri[which(ri$unique_ri > 1), ]
+```
+
+From the above results, `ri` can be considered a road id.
+
+* `rd.stid`: A number corresponding to the status of a road.
+
+* `rd.hr`: The hour value of the last update of a road.
+
+* `rd.mn`: The minute value of the last update of a road.
+
+* `rd.new`:
+```{r}
+length(unique(data$rd.new))
+unique(data$rd.new)
+length(which(data$rd.new == 0))
+length(which(data$rd.new == 1))
+```
+
+It might be to indicate the state of new reports for a given road.
+
+* `rd.strq` and `rd.cmrq`: From the correlation plot, it is evident that there is a strong (negative) correlation between `rd.strq` and `rd.cmrq`. Further inspecting the relation between the 2 columns:
 
 ```{r}
 length(unique(data$rd.strq))
 cmrq <- data %>% group_by(rd.strq) %>% summarize(unique_cmrq = n_distinct(rd.cmrq), mean_cmrq = mean(rd.cmrq))
 cmrq[1:2, ]
+```
+
+They might indicate the a certain state for status requests and comment requests.
+
+* `rd.rp.nm`: The user name of a report.
+
+* `rd.rp.fullnm`: The user full name of a report.
+
+* `rd.rp.hr`: The hour value passed since the publish of the report.
+
+* `rd.rp.mn`: The minute value passed since the public of the report.
+
+* `rd.rp.stid`: The status of a report.
+
+* `rd.rp.cm`: The comment published in a report.
+
+* `rd.rp.cmid`: The id of a comment published in a report.
+
+* `formatted_crawl_date`: The `crawl_date` in local time. It was used to get `report_date`.
+
+* `report_date`: The date and time for a report. It is better than the amount of time passed since the report publish.
+
+* `area`: The area name of a report.
+
+* `road`: The road name of a report.
+
+* `road_from`: The *from* direction of a road report.
+
+* `road_to`: The *to* direction of a road report. `area`, `road_from` and `road_to` combination is the result of `rd.nm` decomposition. It is better using this decomposition to have a better look on road reports.
+
+*Useful Dimensions*:
+
+* `rd.stid`
+* `rd.hr`
+* `rd.mn`
+* `rd.rp.nm`
+* `rd.rp.fullnm`
+* `rd.rp.stid`
+* `rd.rp.cm`
+* `report_date`
+* `area`
+* `road_from`
+* `road_to`
+
+Selecting only these columns for the data
+
+```{r}
+data <- data %>% subset(select = c(rd.stid, rd.hr, rd.mn, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, area, road_from, road_to))
+ncol(data)
+names(data)
+```
+
+### Descriptive Statistics
+
+```{r}
+length(unique(data$rd.stid))
+sort(unique(data$rd.stid))
 ```
 
 ## Inferential Data Analysis
