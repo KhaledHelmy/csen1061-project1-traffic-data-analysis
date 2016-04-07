@@ -9,6 +9,7 @@ library(lubridate)
 library(stringr)
 library(corrplot)
 library(caret)
+library(ggplot2)
 ```
 
 ## Reading Data
@@ -298,7 +299,7 @@ They might indicate the a certain state for status requests and comment requests
 Selecting only these columns for the data
 
 ```{r}
-data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to, city, speed))
+data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to, city, speed, rd.nm))
 ncol(data)
 names(data)
 head(data)
@@ -373,6 +374,38 @@ The status id has 10 different values (besides NA) starting from 1 to 10:
 * 10: ba2olak (mobile app only)
 
 In addition to custom comments by users for certain statuses.
+
+Focusing on the relation between `city`, `area`, `road_from`, `road_to`, `rd.rp.stid` and `speed`.
+
+**Summary Statistics**
+
+```{r}
+#mean_speed = mean(speed),
+#median_speed = median(speed),
+#mode_speed = smode(speed),
+#range_speed = range(speed),
+#quartiles_speed = quantile(speed),
+#deciles_speed = quantile(speed, probs = seq(0,1,0.1)),
+#variance_speed = var(speed),
+#sd_speed = sd(speed),
+#mad_speed = mad(speed)
+
+stid_central_tendency <- data %>% filter(!is.na(rd.rp.stid)) %>% group_by(rd.nm) %>% summarize(mean_stid = mean(rd.rp.stid)) %>% left_join(data)
+
+head(stid_central_tendency)
+```
+
+**Data Visualization**
+
+```{r}
+stid_central_tendency %>% ggplot(aes(x = rd.nm, y = mean_stid)) + geom_bar(stat="identity", width = 0.8)
+
+boxplot(stid_central_tendency$rd.rp.stid)
+
+plot(ecdf(stid_central_tendency$rd.rp.stid))
+
+qqnorm(stid_central_tendency$rd.rp.stid)
+```
 
 ## Inferential Data Analysis
 
