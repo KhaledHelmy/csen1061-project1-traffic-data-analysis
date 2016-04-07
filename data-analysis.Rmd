@@ -63,12 +63,6 @@ names(data)
 
 ### Processing Rows
 
-Checking proportion of N/A values.
-
-```{r}
-sum(is.na(data)) / nrow(data) / ncol(data)
-```
-
 Checking number of duplicate rows.
 
 ```{r}
@@ -83,6 +77,14 @@ nrow(data)
 ```
 
 ## Feature Engineering
+
+Checking proportion of N/A values.
+
+```{r}
+sum(is.na(data)) / nrow(data) / ncol(data)
+
+barplot(sapply(data, function(col) sum(is.na(col))))
+```
 
 Formatting `crawl_date` into a proper `datetime` format and changing the timezone from `UTC` to `Egypt`.
 
