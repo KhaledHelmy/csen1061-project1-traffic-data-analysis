@@ -101,14 +101,48 @@ data$report_date <- data$formatted_crawl_date - hours(data$rd.rp.hr) - minutes(d
 head(data$report_date)
 ```
 
+Finding road delimiters.
+
+```{r}
+nrow(data) - length(which(grepl(";", data$rd.nm))) - length(which(grepl("-", data$rd.nm))) - length(which(grepl("/", data$rd.nm)))
+
+missed_delimiters <- which(!grepl(";", data$rd.nm) & !grepl("-", data$rd.nm) & !grepl("/", data$rd.nm))
+
+unique(data[missed_delimiters,]$rd.nm)
+```
+
 Splitting road names into areas and roads.
 
 ```{r}
-data <- data %>% mutate(area = str_split_fixed(rd.nm, ";", 2)[, 1], road = str_split_fixed(rd.nm, ";", 2)[, 2])
+data <- data %>% mutate(
+  area = ifelse(grepl(";", rd.nm),
+                str_split_fixed(rd.nm, ";", 2)[, 1],
+                ifelse(grepl("-", rd.nm),
+                       str_split_fixed(rd.nm, "-", 2)[, 1],
+                       ifelse(grepl("/", rd.nm),
+                              str_split_fixed(rd.nm, "/", 2)[, 1],
+                              rd.nm)))
+  
+  ,
+  
+  road = ifelse(grepl(";", rd.nm),
+                str_split_fixed(rd.nm, ";", 2)[, 2],
+                ifelse(grepl("-", rd.nm),
+                       str_split_fixed(rd.nm, "-", 2)[, 2],
+                       ifelse(grepl("/", rd.nm),
+                              str_split_fixed(rd.nm, "/", 2)[, 2],
+                              NA)))
+)
 ```
 
 Getting road directions.
 
 ```{r}
-data <- data %>% mutate(road_from = str_split_fixed(road, " To ", 2)[, 1], road_to = str_split_fixed(road, " To ", 2)[, 2])
+data <- data %>% mutate(
+  road_from = ifelse(is.na(road), NA, str_split_fixed(road, " To ", 2)[, 1])
+  
+  ,
+  
+  road_to = ifelse(is.na(road), NA, str_split_fixed(road, " To ", 2)[, 2])
+)
 ```
