@@ -410,3 +410,14 @@ qqnorm(stid_central_tendency$rd.rp.stid)
 ## Inferential Data Analysis
 
 ### Parameter Inference (Confidence Intervals)
+
+```{r}
+stid_central_tendency <- stid_central_tendency %>% mutate(error = qt(0.975, df = length(rd.rp.stid)-1)*sd(rd.rp.stid)/sqrt(length(rd.rp.stid)))
+
+stid_central_tendency <- stid_central_tendency %>% mutate(
+  left = mean_stid - error,
+  right = mean_stid + error
+)
+
+head(stid_central_tendency)
+```
