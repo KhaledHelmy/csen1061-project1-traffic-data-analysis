@@ -278,6 +278,8 @@ They might indicate the a certain state for status requests and comment requests
 
 * `city`: The road city.
 
+* `speed`: The speed of a road.
+
 *Useful Dimensions*:
 
 * `rd.stid`
@@ -291,11 +293,12 @@ They might indicate the a certain state for status requests and comment requests
 * `road_from`
 * `road_to`
 * `city`
+* `speed`
 
 Selecting only these columns for the data
 
 ```{r}
-data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to, city))
+data <- data %>% subset(select = c(rd.stid, rd.rp.nm, rd.rp.fullnm, rd.rp.stid, rd.rp.cm, report_date, road_date, area, road_from, road_to, city, speed))
 ncol(data)
 names(data)
 head(data)
@@ -347,10 +350,29 @@ users <- data %>% group_by(city) %>% summarize(unique_users = length(unique(rd.r
 head(users)
 ```
 
+Checking nature of values for area status and for road status.
+
 ```{r}
 length(unique(data$rd.stid))
 sort(unique(data$rd.stid))
+
+length(unique(data$rd.rp.stid))
+sort(unique(data$rd.rp.stid))
 ```
+
+The status id has 10 different values (besides NA) starting from 1 to 10:
+* 1: 7alawa
+* 2: lazeez
+* 3: mashy
+* 4: za7ma
+* 5: mafeesh amal
+* 6: so2al
+* 7: khatar (mobile app only)
+* 8: 7adsa (mobile app only)
+* 9: 3otl (mobile app only)
+* 10: ba2olak (mobile app only)
+
+In addition to custom comments by users for certain statuses.
 
 ## Inferential Data Analysis
 
